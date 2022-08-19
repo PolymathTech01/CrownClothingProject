@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+## Crown Clothng Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a small e-commerce site for clothing materials
 
 ## Available Scripts
 
