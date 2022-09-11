@@ -2,7 +2,6 @@ import { createContext, useState, useEffect } from 'react';
 import {
   createUserDocumentFromAuth,
   onAuthStateChangedListener,
-  signOutUser,
 } from '../Utils/Firebase/Firebase.utils';
 
 // The acutal value that want to be accesssed from the outside
