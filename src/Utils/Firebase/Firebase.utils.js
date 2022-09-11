@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
+// import { getAnalytics } from 'firebase/analytics';
 import {
   getAuth,
   signInWithRedirect,
@@ -11,7 +11,16 @@ import {
   signOut,
   onAuthStateChanged,
 } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  writeBatch,
+  query,
+  getDocs,
+} from 'firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -28,8 +37,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const FirebaseApp = initializeApp(firebaseConfig);
-const analytics = getAnalytics(FirebaseApp);
+initializeApp(firebaseConfig);
+// const analytics = getAnalytics(FirebaseApp);
 
 const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({ prompt: 'select_account' });
@@ -40,6 +49,31 @@ export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, googleProvider);
 
 export const firestore = getFirestore();
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = collection(firestore, collectionKey);
+  const batch = writeBatch(firestore);
+  objectsToAdd.forEach((object) => {
+    const documentReference = doc(collectionRef, object.title.toLowerCase()); // the key is the title
+    batch.set(documentReference, object); // the value is the object itself
+  });
+
+  await batch.commit(); //it will begin the process
+  // console.log('done'); // this will print out when its done
+};
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(firestore, 'categories');
+  const queryMethod = query(collectionRef);
+  const querySnapshot = await getDocs(queryMethod);
+  const categoryMap = querySnapshot.docs.reduce((acc, docShapShot) => {
+    const { title, items } = docShapShot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+  return categoryMap;
+};
 export const createUserDocumentFromAuth = async (
   userAuth,
   additionalInformation = {}
@@ -59,7 +93,7 @@ export const createUserDocumentFromAuth = async (
         ...additionalInformation,
       });
     } catch (error) {
-      console.log('error creating user', error.message);
+      console.error('error creating user', error.message);
     }
   }
   return userDocRef;

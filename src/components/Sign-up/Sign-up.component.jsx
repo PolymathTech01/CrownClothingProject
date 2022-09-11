@@ -1,11 +1,11 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
 } from '../../Utils/Firebase/Firebase.utils';
-import FormInput from '../form-input/Form-input.component';
+import FormInput from '../Form-input/Form-input.component';
 import Button from '../Buttons/Button.component';
-import './Sign-up.styles.scss';
+import { SignUpContainer, Heading } from './Sign-up.styles.jsx';
 // import { UserContext } from '../../contexts/user.context';
 const defaultFromFields = {
   displayName: '',
@@ -47,8 +47,8 @@ const SignUp = () => {
     setFromFields({ ...formFields, [name]: value });
   };
   return (
-    <div className='sign-up-container'>
-      <h2>Don't have an account?</h2>
+    <SignUpContainer>
+      <Heading>Don't have an account?</Heading>
       <span>Sign up with your email and password</span>
       <form onSubmit={handleSubmit}>
         <FormInput
@@ -85,7 +85,7 @@ const SignUp = () => {
         />
         <Button type='submit'>Sign Up</Button>
       </form>
-    </div>
+    </SignUpContainer>
   );
 };
 

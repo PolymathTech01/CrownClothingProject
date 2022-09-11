@@ -1,0 +1,27 @@
+import React from 'react';
+import Product from '../Product-card/Product-card.component';
+
+import {
+  CategoryPreviewContainer,
+  CategoryTitle,
+  Preview,
+} from './category-preview.styles.jsx';
+
+const CategoryPreview = ({ title, products }) => {
+  return (
+    <CategoryPreviewContainer>
+      <h2>
+        <CategoryTitle to={title}>{title.toUpperCase()}</CategoryTitle>
+      </h2>
+      <Preview>
+        {products
+          .filter((_, index) => index < 4)
+          .map((product) => (
+            <Product key={product.id} title={title} product={product} />
+          ))}
+      </Preview>
+    </CategoryPreviewContainer>
+  );
+};
+
+export default CategoryPreview;
