@@ -3,6 +3,7 @@ import {
   createUserDocumentFromAuth,
   onAuthStateChangedListener,
 } from '../Utils/Firebase/Firebase.utils';
+import { createAction } from '../Utils/Reducer/reducer.utils';
 
 // The acutal value that want to be accesssed from the outside
 export const UserContext = createContext({
@@ -37,7 +38,7 @@ export const UserProvider = ({ children }) => {
   const { currentUser } = state;
   console.log('current user', currentUser);
   const setCurrentUser = (user) => {
-    dispatch({ type: USER_TYPES.SET_CURRENT_USER, payload: user });
+    dispatch(createAction(USER_TYPES.SET_CURRENT_USER, user));
   };
   const value = { currentUser, setCurrentUser };
   // signOutUser();

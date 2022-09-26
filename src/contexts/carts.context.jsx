@@ -1,5 +1,5 @@
-import { createContext, useEffect, useState, useReducer } from 'react';
-
+import { createContext, useReducer } from 'react';
+import { createAction } from '../Utils/Reducer/reducer.utils';
 const addCartItem = (cartItems, productToAdd) => {
   // find if cartItems contains productToAdd
   // if found increment the quantity, else add the productToAdd to the cartitems
@@ -52,15 +52,19 @@ const INITIAL_STATE = {
   cartItems: [],
   isCartOpen: false,
 };
+const CART_ACTION_TYPES = {
+  SET_NEW_CART_INFO: 'SET_NEW_CART_INFO',
+  SET_IS_CART_OPEN: 'SET_IS_CART_OPEN',
+};
 const cartReducer = (state, action) => {
   const { type, payload } = action;
   switch (type) {
-    case 'SET_NEW_CART_INFO':
+    case CART_ACTION_TYPES.SET_NEW_CART_INFO:
       return {
         ...state,
         ...payload,
       };
-    case 'SET_IS_CART_OPEN':
+    case CART_ACTION_TYPES.SET_IS_CART_OPEN:
       return {
         ...state,
         isCartOpen: payload,
@@ -84,14 +88,13 @@ export const CartProvider = ({ children }) => {
       (total, cartItem) => total + cartItem.quantity * cartItem.price,
       0
     );
-    dispatch({
-      type: 'SET_NEW_CART_INFO',
-      payload: {
+    dispatch(
+      createAction(CART_ACTION_TYPES.SET_NEW_CART_INFO, {
         cartTotal: newCartTotal,
         cartItems: newCartItems,
         cartcount: newCartCount,
-      },
-    });
+      })
+    );
 
     /**
      * I need to generate;
@@ -118,7 +121,7 @@ export const CartProvider = ({ children }) => {
     updateCartItems(newCartItems);
   };
   const setIsCartOpen = (bool) => {
-    dispatch({ type: 'SET_IS_CART_OPEN', payload: bool });
+    dispatch(createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, bool));
   };
   const value = {
     isCartOpen,
