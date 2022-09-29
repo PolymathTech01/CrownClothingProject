@@ -10,7 +10,7 @@ import {
   createUserDocumentFromAuth,
   onAuthStateChangedListener,
 } from './Utils/Firebase/Firebase.utils';
-// import { setCurrentUser } from './Store/User/user.action';
+import { setCurrentUser } from './Store/User/user.action';
 import { USER_TYPES } from './Store/User/user.types';
 
 const App = () => {
