@@ -67,12 +67,7 @@ export const getCategoriesAndDocuments = async () => {
   const collectionRef = collection(firestore, 'categories');
   const queryMethod = query(collectionRef);
   const querySnapshot = await getDocs(queryMethod);
-  const categoryMap = querySnapshot.docs.reduce((acc, docShapShot) => {
-    const { title, items } = docShapShot.data();
-    acc[title.toLowerCase()] = items;
-    return acc;
-  }, {});
-  return categoryMap;
+  return querySnapshot.docs.map((docSnapshot) => docSnapshot.data());
 };
 export const createUserDocumentFromAuth = async (
   userAuth,
